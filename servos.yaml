@@ -1,0 +1,21 @@
+servos:
+  11:
+    name: camera
+    min: 100
+    max: 560
+  12:
+    name: shoulder
+    min: 100
+    max: 560
+  13:
+    name: elbow
+    min: 100
+    max: 560
+  14:
+    name: wrist
+    min: 100
+    max: 560
+  15:
+    name: gripper
+    min: 100
+    max: 560
