@@ -16,30 +16,29 @@ except:
 
 
 class Servo:
-    def __init__(self, index, min, max, init, angle_range):
+    def __init__(self, index, pwm_min, pwm_max, angle_range, angle_min, angle_max):
         self.index = index
-        self.min = min
-        self.max = max
-        self.init = init
+        self.pwm_min = pwm_min
         self.angle_range = angle_range
-        self.pwm_multiplier = (max - min) / angle_range
+        self.pwm_multiplier = (pwm_max - pwm_min) / angle_range
+        self.angle_min = angle_min
+        self.angle_max = angle_max
         self.state = 'idle'
         self.angle = 0
         self.target_angle = 0
         self.speed = 0
         self.tick_count = 0
-        self.last_move_tick = 0
         self.tick_count_divider = 0
-        self.task = None
         self.init_position()
 
     def init_position(self):
         self.angle = 0
         self.target_angle = 0
         self.state = 'idle'
-        pwm.set_pwm(self.index, 0, self.init)
+        self.set_pwm(0)
 
     def set_angle(self, angle, speed):
+        angle = max(min(angle, self.angle_max), self.angle_min)
         self.target_angle = angle
         self.speed = speed
         self.tick_count_divider = 1.0 / speed
@@ -50,13 +49,14 @@ class Servo:
             return False
         self.tick_count += 1
         if self.tick_count >= self.tick_count_divider:
+            angle_change = int(self.tick_count / self.tick_count_divider)
             self.tick_count = 0
             if self.angle > self.target_angle:
-                self.angle -= 1
+                self.angle -= angle_change
                 if self.angle < self.target_angle:
                     self.angle = self.target_angle
             elif self.angle < self.target_angle:
-                self.angle += 1
+                self.angle += angle_change
                 if self.angle > self.target_angle:
                     self.angle = self.target_angle
 
@@ -67,11 +67,12 @@ class Servo:
         return True
 
     def set_pwm(self, angle):
-        pwm.set_pwm(self.index, 0, int(round((self.pwm_multiplier * (angle + self.angle_range / 2)), 0)))
+        pwm.set_pwm(self.index, 0, self.pwm_min + int(self.pwm_multiplier * (angle + self.angle_range / 2)))
 
     @property
     def state_dict(self):
-        return dict(state=self.state, angle=self.angle, target_angle=self.target_angle, speed=self.speed)
+        return dict(state=self.state, angle=self.angle, target_angle=self.target_angle, speed=self.speed,
+                    angle_min=self.angle_min, angle_max=self.angle_max)
 
 
 class ServoController(Component):
@@ -79,7 +80,10 @@ class ServoController(Component):
         super().__init__("servos")
         self.servos = {}
         for index, servo in utils.load("servos.yaml", "servos").items():
-            self.servos[servo['name']] = Servo(index, servo['min'], servo['max'], servo['init'], servo['angle_range'])
+            pwm_details = servo['pwm']
+            angle_details = servo['angle']
+            self.servos[servo['name']] = Servo(index, pwm_details['min'], pwm_details['max'],
+                                               angle_details['range'], angle_details['min'], angle_details['max'])
 
     async def start(self):
         asyncio.create_task(self.update_servos())
