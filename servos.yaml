@@ -3,19 +3,29 @@ servos:
     name: camera
     min: 100
     max: 560
+    init: 300
+    angle_range: 180
   12:
     name: shoulder
     min: 100
     max: 560
+    init: 300
+    angle_range: 180
   13:
     name: elbow
     min: 100
     max: 560
+    init: 300
+    angle_range: 180
   14:
     name: wrist
     min: 100
     max: 560
+    init: 300
+    angle_range: 180
   15:
     name: gripper
     min: 100
     max: 560
+    init: 300
+    angle_range: 180
