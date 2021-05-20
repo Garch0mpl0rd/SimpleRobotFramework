@@ -1,4 +1,6 @@
 pyyaml
 asyncio_mqtt
 gpiozero
+pigpio
 adafruit-pca9685
+rpi_ws281x

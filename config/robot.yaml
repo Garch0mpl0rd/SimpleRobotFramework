@@ -58,3 +58,24 @@ servos:
       range: 180
       min: -90
       max: 4
+leds:
+  type: pixelstrip
+  pin: 12
+  count: 16
+  frequency: 800000
+  dma: 10
+  invert: False
+  channel: 0
+  brightness: 255
+  names:
+    0: left1
+    1: left2
+    2: left3
+    4: left4
+    5: left6
+    6: right1
+    7: right2
+    8: right3
+    9: right4
+    10: right5
+    11: right6
