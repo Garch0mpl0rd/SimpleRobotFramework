@@ -6,7 +6,7 @@ from simplerobot.controllers import *
 async def main():
     config = utils.load("config/robot.yaml")
     controllers = [MotorController(config), ServoController(config), DistanceSensorController(config),
-                   LEDController(config)]
+                   LEDController(config), LineSensorController(config)]
     for controller in controllers:
         asyncio.create_task(controller.start())
 

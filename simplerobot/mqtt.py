@@ -38,9 +38,13 @@ class Component:
                 async for message in messages:
                     self.process_control(json.loads(message.payload.decode()))
 
-    def update_state(self):
+    def update_state(self, thread_safe=False):
         message = json.dumps(self.state)
-        asyncio.create_task(self.client.publish(f"robot/{self.name}/state", message))
+        future = self.client.publish(f"robot/{self.name}/state", message)
+        if thread_safe:
+            asyncio.run_coroutine_threadsafe(future)
+        else:
+            asyncio.create_task(future)
 
     def process_control(self, message):
         pass
