@@ -1,9 +1,0 @@
-motors:
-  - name: right
-    enable: 4
-    pin1: 15
-    pin2: 14
-  - name: left
-    enable: 17
-    pin1: 27
-    pin2: 18

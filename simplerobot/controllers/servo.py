@@ -1,5 +1,5 @@
-import utils
-from mqtt import Component
+from simplerobot import utils
+from simplerobot.mqtt import Component
 import asyncio
 
 try:
@@ -76,10 +76,10 @@ class Servo:
 
 
 class ServoController(Component):
-    def __init__(self):
+    def __init__(self, config):
         super().__init__("servos")
         self.servos = {}
-        for index, servo in utils.load("servos.yaml", "servos").items():
+        for index, servo in config['servos'].items():
             pwm_details = servo['pwm']
             angle_details = servo['angle']
             self.servos[servo['name']] = Servo(index, pwm_details['min'], pwm_details['max'],
@@ -113,8 +113,3 @@ class ServoController(Component):
     @property
     def state(self):
         return {name: servo.state_dict for name, servo in self.servos.items()}
-
-
-if __name__ == "__main__":
-    controller = ServoController()
-    asyncio.run(controller.start())

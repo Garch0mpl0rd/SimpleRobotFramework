@@ -1,5 +1,0 @@
-sensors:
-  front:
-    trigger: 11
-    echo: 8
-    max_distance: 4

@@ -1,21 +1,27 @@
-import utils
-from mqtt import Component
+from simplerobot import utils
+from simplerobot.mqtt import Component
 import asyncio
 
 try:
+    from gpiozero.pins.pigpio import PiGPIOFactory
     from gpiozero import DistanceSensor
+
 except:
     class DistanceSensor:
-        def __init__(self, echo, trigger, max_distance=1):
+        def __init__(self, echo, trigger, max_distance=1, pin_factory=None):
             self.distance = 0
+
+    class PiGPIOFactory:
+        pass
 
 
 class DistanceSensorController(Component):
-    def __init__(self):
+    def __init__(self, config: dict):
         super().__init__("distancesensors")
         self.sensors = {}
-        for name, sensor in utils.load("distancesensors.yaml", "sensors").items():
-            self.sensors[name] = DistanceSensor(sensor['echo'], sensor['trigger'], max_distance=sensor['max_distance'])
+        for name, sensor in config['sensors'].items():
+            self.sensors[name] = DistanceSensor(sensor['echo'], sensor['trigger'], max_distance=sensor['max_distance'],
+                                                pin_factory=PiGPIOFactory())
 
     async def start(self):
         asyncio.create_task(self.measure())
@@ -25,7 +31,6 @@ class DistanceSensorController(Component):
         while True:
             await asyncio.sleep(1)
             self.update_state()
-
 
     @property
     def state(self):

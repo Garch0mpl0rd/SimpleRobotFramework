@@ -1,0 +1,4 @@
+pyyaml
+asyncio_mqtt
+gpiozero
+adafruit-pca9685

@@ -1,3 +1,17 @@
+sensors:
+  front:
+    trigger: 11
+    echo: 8
+    max_distance: 4
+motors:
+  - name: right
+    enable: 4
+    pin1: 15
+    pin2: 14
+  - name: left
+    enable: 17
+    pin1: 27
+    pin2: 18
 servos:
   11:
     name: camera

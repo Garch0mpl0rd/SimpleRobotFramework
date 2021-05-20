@@ -1,5 +1,5 @@
-import utils
-from mqtt import Component
+from simplerobot import utils
+from simplerobot.mqtt import Component
 import asyncio
 
 try:
@@ -14,10 +14,10 @@ except:
 
 
 class MotorController(Component):
-    def __init__(self):
+    def __init__(self, config: dict):
         super().__init__("motors")
         self.motors = {}
-        for motor in utils.load("motors.yaml", "motors"):
+        for motor in config['motors']:
             self.motors[motor['name']] = Motor(motor['pin1'], motor['pin2'], motor['enable'], True)
 
     def process_control(self, message):
@@ -38,7 +38,3 @@ class MotorController(Component):
     def state(self):
         return {name: {"speed": motor.value * 100} for name, motor in self.motors.items()}
 
-
-if __name__ == "__main__":
-    controller = MotorController()
-    asyncio.run(controller.start())
