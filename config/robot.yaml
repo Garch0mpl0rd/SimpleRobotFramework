@@ -6,7 +6,7 @@ distancesensors:
 linesensors:
   left:
     pin: 20
-  midle:
+  middle:
     pin: 16
   right:
     pin: 19
