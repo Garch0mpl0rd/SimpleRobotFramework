@@ -11,6 +11,7 @@ class Component:
         self.client = None
         url = os.environ.get('SIMPLEROBOT_MQTT_HOST', "mqtt://localhost")
         self.url_details = urlparse(url)
+        self.loop = None
         if self.url_details.scheme not in ('mqtt', 'mqtts'):
             raise RuntimeError('Unsupported URL for MQTT "%s"' % url)
 
@@ -28,6 +29,7 @@ class Component:
         return host, kwargs
 
     async def start(self):
+        self.loop = asyncio.get_event_loop()
         host, kwargs = self._get_connection_details()
         async with asyncio_mqtt.Client(host, **kwargs) as client:
             self.client = client
@@ -42,7 +44,7 @@ class Component:
         message = json.dumps(self.state)
         future = self.client.publish(f"robot/{self.name}/state", message)
         if thread_safe:
-            asyncio.run_coroutine_threadsafe(future)
+            asyncio.run_coroutine_threadsafe(future, self.loop)
         else:
             asyncio.create_task(future)
 
