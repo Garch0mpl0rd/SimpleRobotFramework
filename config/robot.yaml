@@ -68,14 +68,15 @@ leds:
   channel: 0
   brightness: 255
   names:
-    0: left1
-    1: left2
-    2: left3
-    4: left4
-    5: left6
-    6: right1
-    7: right2
-    8: right3
-    9: right4
-    10: right5
-    11: right6
+    0: left_bottom_back
+    1: left_bottom_middle
+    2: left_bottom_front
+    3: left_top_back
+    4: left_top_middle
+    5: left_top_front
+    6: right_top_back
+    7: right_top_middle
+    8: right_top_front
+    9: right_bottom_back
+    10: right_bottom_middle
+    11: right_bottom_front
