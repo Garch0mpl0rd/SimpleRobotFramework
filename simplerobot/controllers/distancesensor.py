@@ -1,4 +1,3 @@
-from simplerobot import utils
 from simplerobot.mqtt import Component
 import asyncio
 
@@ -19,7 +18,7 @@ class DistanceSensorController(Component):
     def __init__(self, config: dict):
         super().__init__("distancesensors")
         self.sensors = {}
-        for name, sensor in config['sensors'].items():
+        for name, sensor in config['distancesensors'].items():
             self.sensors[name] = DistanceSensor(sensor['echo'], sensor['trigger'], max_distance=sensor['max_distance'],
                                                 pin_factory=PiGPIOFactory())
 
@@ -35,8 +34,3 @@ class DistanceSensorController(Component):
     @property
     def state(self):
         return {name: {"distance": sensor.distance} for name, sensor in self.sensors.items()}
-
-
-if __name__ == "__main__":
-    controller = DistanceSensorController()
-    asyncio.run(controller.start())

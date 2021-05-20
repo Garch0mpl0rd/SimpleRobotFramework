@@ -1,4 +1,3 @@
-from simplerobot import utils
 from simplerobot.mqtt import Component
 import asyncio
 
