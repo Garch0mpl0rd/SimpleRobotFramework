@@ -162,7 +162,7 @@ class Robot:
 
     @staticmethod
     def _create_message(named_objects: NamedCachedStateObjectCollection):
-        message = {name: item.pop_update_state() for name, item in named_objects if item.needs_update}
+        message = {name: item.pop_update_state() for name, item in named_objects.items() if item.needs_update}
         return message
 
     def _send_message(self, topic: str, message: dict):
@@ -184,7 +184,7 @@ class Robot:
             if not areas_left:
                 self.init_event.set()
 
-    def forward(self, speed=1):
+    def forward(self, speed=100):
         self.motors['left'].set_speed(speed)
         self.motors['right'].set_speed(speed)
         self.update_motors()
@@ -194,7 +194,7 @@ class Robot:
         self.motors['right'].set_speed(0)
         self.update_motors()
 
-    def backward(self, speed=1):
+    def backward(self, speed=100):
         self.motors['left'].set_speed(speed * -1)
         self.motors['right'].set_speed(speed * -1)
         self.update_motors()
