@@ -87,3 +87,9 @@ leds:
     9: right_bottom_back
     10: right_bottom_middle
     11: right_bottom_front
+accelerometers:
+  body:
+    type: lsm303
+magnetometers:
+  body:
+    type: lsm303agr

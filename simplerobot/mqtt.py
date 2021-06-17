@@ -36,6 +36,7 @@ class Component:
     def process_control(self, message):
         pass
 
-    @property
-    def state(self):
-        return {}
+    # Subclasses must have either a property or attribute called 'state'
+    # @property
+    # def state(self):
+    #     return {}
