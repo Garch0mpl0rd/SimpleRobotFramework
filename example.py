@@ -24,6 +24,36 @@ if __name__ == '__main__':
 
     time.sleep(1)
 
+    print("Rotate left")
+    robot.rotate_left(90)
+
+    time.sleep(1)
+
+    print("Forward ⬆")
+    robot.forward()
+
+    time.sleep(1)
+
+    print("Forward ⬆")
+    robot.forward()
+
+    time.sleep(1)
+
+    print("Rotate left")
+    robot.rotate_left(90)
+
+    time.sleep(1)
+
+    print("Forward ⬆")
+    robot.forward()
+
+    time.sleep(1)
+
+    print("Forward ⬆")
+    robot.forward()
+
+    time.sleep(1)
+
     print("Stop 🛑")
     robot.stop()
 
